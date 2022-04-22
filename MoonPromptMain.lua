@@ -30,7 +30,24 @@ function addCommand(Names, Description, Func)
     table.insert(commandTable, {Names, Description, Func})
 end
 
-function preCommand()
+function getPlayer(Str)
+    for _,v in pairs(Services.Players:GetPlayers()) do
+        if find(v.Name:lower(), Str:lower()) or find(v.DisplayName:lower(), Str:lower()) then
+            return v
+        end
+    end
+    return false
+end
+
+function getCharacter(Plr)
+    return (Plr and Plr.Character) or (Player and Player.Character) or false
+end
+
+function getHumanoid(Plr)
+    return (Plr and Plr.Character and Plr.Character:FindFirstChildOfClass("Humanoid")) or (Player and Player.Character and Player.Character:FindFirstChildOfClass("Humanoid")) or false
+end
+
+local function preCommand()
     rconsoleprint("@@DARK_GRAY@@")
     rconsoleprint("> ")
     rconsoleprint("@@WHITE@@")
@@ -42,12 +59,14 @@ local res = string.format('%sx%s',tostring(CCamera.ViewportSize.X),tostring(CCam
 getgenv().ExecutionTimes = 0
 getgenv().ExecutionTimesm = 0
 getgenv().ExecutionTime = string.format('%s minutes, %s seconds.',getgenv().ExecutionTimesm,getgenv().ExecutionTimes)
+
 local Months = {
-[1] = 'January',[2] = 'February',[3] = 'March',
-[4] = 'April',[5] = 'May',[6] = 'June',
-[7] = 'July',[8] = 'August',[9] = 'September',
-[10] = 'October',[11] = 'November',[12] = 'December'
+    [1] = 'January',[2] = 'February',[3] = 'March',
+    [4] = 'April',[5] = 'May',[6] = 'June',
+    [7] = 'July',[8] = 'August',[9] = 'September',
+    [10] = 'October',[11] = 'November',[12] = 'December'
 }
+
 spawn(function()
     while wait(1) do
         getgenv().ExecutionTimes=getgenv().ExecutionTimes+1
@@ -58,9 +77,11 @@ spawn(function()
         getgenv().ExecutionTime = string.format('%s minutes, %s seconds.',getgenv().ExecutionTimesm,getgenv().ExecutionTimes)
     end
 end)
+
 local function getMDYT()
     return string.format('%s %s, %s | %s',Months[tonumber(os.date('%m'))],tonumber(os.date('%d')),tostring(os.date('%Y')),tostring(os.date('%X')))
 end
+
 local function Logo()
     rconsoleclear()
     rconsoleprint('@@DARK_GRAY@@')

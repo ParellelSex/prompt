@@ -34,16 +34,7 @@ local function preCommand()
     rconsoleprint("@@DARK_GRAY@@")
     rconsoleprint("> ")
     rconsoleprint("@@WHITE@@")
-    rconsoleprint("Command")
-    rconsoleprint("@@DARK_GRAY@@")
-    rconsoleprint(": ")
-end
-
-if not isfolder("MoonPrompt") then
-    makefolder('MoonPrompt')
-end
-if not isfolder("MoonPrompt/addons") then
-    makefolder('MoonPrompt/addons')
+    rconsoleprint("Command: ")
 end
 
 local CCamera = game:GetService('Workspace').CurrentCamera
@@ -106,40 +97,41 @@ end
 
 ---- Core ----
 
-rconsolename("Prompt")
+rconsolename("Moon Prompt - By PeaPattern & ParellelSex")
 Logo()
 preCommand()
 
 addCommand({"info"}, "Gives you information on a command.", function(Message, Args)
     if #Args >= 1 then
+        local Command = Args[2]
         local foundCommand
-        do
+        if Command then
             for _,v in pairs(commandTable) do
                 local Names = v[1]
+                local Description = v[2]
                 for i,x in pairs(Names) do
-                    if find(x:lower(), Args[1]:lower()) then
+                    if x:lower() == Command:lower() then
                         foundCommand = v
                         break
                     end
                 end
             end
-        end
-        
-        if foundCommand then
-            local Aliases = ""
-            if #foundCommand[1] < 1 then
-                local Aliases = "None"
-            end
-            for _,v in pairs(foundCommand[1]) do
-                if _ ~= #foundCommand[1] then
-                    Aliases = Aliases .. v .. ", "
-                else
-                    Aliases = Aliases .. v
+            
+            if foundCommand then
+                local Aliases = ""
+                for _,v in pairs(foundCommand[1]) do
+                    if _ ~= #foundCommand[1] then
+                        Aliases = Aliases .. v .. ", "
+                    else
+                        Aliases = Aliases .. v
+                    end
                 end
+                return string.format("\nName: %s\nAliases: %s\nDescription: %s\n\n", foundCommand[1][1], Aliases, foundCommand[2])
+            else
+                return "Could not find command: " .. Command .. "\n"
             end
-            return format("Name: %s\nAliases: %s\nDescription: %s\n", foundCommand[1][1], Aliases, foundCommand[2])
         else
-            return "Command not found."
+            return "Invalid command argument."
         end
     end
 end)
@@ -150,8 +142,8 @@ addCommand({"clear"}, "Clears the console.", function(Message, Args)
     Prompt()
     return "Cleared console!"
 end)
-for _,file in pairs(listfiles('MoonPrompt/addons')) do
-    loadstring(readfile(tostring(file)))()
+for i,v in next, listfiles('MoonPrompt/addons') do
+    loadstring(readfile(v:gsub([[\]],'/'):sub(0, -1)))();
 end
 
 ---- Final ----
@@ -164,8 +156,9 @@ function Prompt()
         local Names = v[1]
         local Func = v[3]
         for i,x in pairs(Names) do
+            local Args = split(Input:sub(x:len()+1), " ")
             if Split[1] == x then
-                local Data = Func(Message, split(sub(Input, len(x)), " "))
+                local Data = Func(Input, Args)
                 rconsoleprint(Data)
                 Passed = true
             end
@@ -182,3 +175,5 @@ function Prompt()
     task.wait()
 end
 Prompt()
+
+---- Finished ----

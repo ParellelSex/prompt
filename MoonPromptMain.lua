@@ -154,7 +154,7 @@ addCommand({"cmds", "help"}, "Lists out the commands.", function(Message, Args)
     return cmdList
 end)
 for i,v in next, listfiles('MoonPrompt/addons') do
-    loadstring(readfile(v))
+    loadfile(v)()
 end
 
 ---- Final ----

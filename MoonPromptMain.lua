@@ -167,6 +167,18 @@ addCommand({"clear","clr"}, "Clears the console.", function(Message, Args)
     return "Cleared console!"
 end)
 
+addCommand({"commands", "cmds", "help"}, "Lists out the commands.", function(Message, Args)
+    local cmdList = "\n"
+    for _,v in pairs(commandTable) do
+        local Names = v[1]
+        for i,x in pairs(Names) do
+            cmdList = cmdList .. x .. "\n"
+        end
+    end
+    cmdList = cmdList .. "\n"
+    return cmdList
+end)
+
 ---- Final ----
 
 function Prompt()

@@ -26,11 +26,11 @@ local Player = Services.Players.LocalPlayer
 ---- Main Functions ----
 
 local commandTable = {}
-local function addCommand(Names, Description, Func)
+function addCommand(Names, Description, Func)
     table.insert(commandTable, {Names, Description, Func})
 end
 
-local function preCommand()
+function preCommand()
     rconsoleprint("@@DARK_GRAY@@")
     rconsoleprint("> ")
     rconsoleprint("@@WHITE@@")
@@ -101,6 +101,9 @@ rconsolename("Moon Prompt - By PeaPattern & ParellelSex")
 Logo()
 preCommand()
 
+for i,v in next, listfiles('MoonPrompt/addons') do
+    loadfile(v)()
+end
 addCommand({"info"}, "Gives you information on a command.", function(Message, Args)
     if #Args >= 1 then
         local Command = Args[2]
@@ -142,21 +145,6 @@ addCommand({"clear"}, "Clears the console.", function(Message, Args)
     Prompt()
     return "Cleared console!"
 end)
-
-addCommand({"commands", "cmds", "help"}, "Lists out the commands.", function(Message, Args)
-    local cmdList = "\n"
-    for _,v in pairs(commandTable) do
-        local Names = v[1]
-        for i,x in pairs(Names) do
-            cmdList = cmdList .. x .. "\n"
-        end
-    end
-    cmdList = cmdList .. "\n"
-    return cmdList
-end)
-for i,v in next, listfiles('MoonPrompt/addons') do
-    loadfile(v)()
-end
 
 ---- Final ----
 

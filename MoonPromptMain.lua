@@ -174,10 +174,10 @@ addCommand({"import"}, "Imports a addon into the console.", function(Message, Ar
             if GetURL("/addons/"..Command) then
                 writefile("MoonPrompt/addons/"..Command,GetURL("/addons/"..Command))
             elseif
-            consoleError("Couldnt find this file... for a list of addons go here: ")
+            consoleError("Couldnt find this file... for a list of addons go here: https://github.com/ParellelSex/prompt/tree/main/addons")
             end
         elseif
-            consoleError("Please list a file... for a list of addons go here: ")
+            consoleError("Please list a file... for a list of addons go here: https://github.com/ParellelSex/prompt/tree/main/addons")
         end
         end
     preCommand()

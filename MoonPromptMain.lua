@@ -54,7 +54,7 @@ function getHumanoid(Plr)
     return (Plr and Plr.Character and Plr.Character:FindFirstChildOfClass("Humanoid")) or (Player and Player.Character and Player.Character:FindFirstChildOfClass("Humanoid")) or false
 end
 
-local function preCommand()
+function preCommand()
     rconsoleprint("@@DARK_GRAY@@")
     rconsoleprint("> ")
     rconsoleprint("@@WHITE@@")

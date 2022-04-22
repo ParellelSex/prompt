@@ -9,4 +9,4 @@ local function GetURL(url)
     return game:HttpGet(string.format(get,link,user,branch,url))
 end
 
-loadstring(GetURL('MoonPromptMain.lua.lua'))();
+loadstring(GetURL('MoonPromptMain.lua'))();

@@ -106,7 +106,7 @@ for i,v in next, listfiles('MoonPrompt/addons') do
 end
 addCommand({"info"}, "Gives you information on a command.", function(Message, Args)
     if #Args >= 1 then
-        local Command = Args[2]
+        local Command = Args[1]
         local foundCommand
         if Command then
             for _,v in pairs(commandTable) do
@@ -156,7 +156,7 @@ function Prompt()
         local Names = v[1]
         local Func = v[3]
         for i,x in pairs(Names) do
-            local Args = split(Input:sub(x:len()+1), " ")
+            local Args = split(Input:sub(x:len()+2), " ")
             if Split[1] == x then
                 local Data = Func(Input, Args)
                 if Data then

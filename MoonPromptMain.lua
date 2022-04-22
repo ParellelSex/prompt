@@ -142,8 +142,23 @@ addCommand({"clear"}, "Clears the console.", function(Message, Args)
     Prompt()
     return "Cleared console!"
 end)
+
+addCommand({"cmds", "help"}, "Lists out the commands.", function(Message, Args)
+    local cmdList = "\n"
+    for _,v in pairs(commandTable) do
+        local Names = v[1]
+        for i,x in pairs(Names) do
+            if _ ~= #commandTable then
+                cmdList = cmdList .. x .. "\n"
+            else
+                cmdList = cmdList .. x .. "\n\n"
+            end
+        end
+    end
+    return cmdList
+end)
 for i,v in next, listfiles('MoonPrompt/addons') do
-    loadstring((readfile(v))
+    loadfile(v)
 end
 
 ---- Final ----

@@ -159,7 +159,11 @@ function Prompt()
             local Args = split(Input:sub(x:len()+1), " ")
             if Split[1] == x then
                 local Data = Func(Input, Args)
-                rconsoleprint(Data)
+                if Date then
+                    rconsoleprint(Data)
+                else
+                    consoleError("No command data found.")
+                end
                 Passed = true
             end
         end

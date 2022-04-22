@@ -77,7 +77,9 @@ elseif ms:lower() == 'clear' then
     rconsoleprint('@@DARK_GRAY@@')
     rconsoleprint([[    _.._
       .' .-'`    ]]..'Resolution: '..res..'\n'..[[
-     /  /        ]]..'Instance time: '..getgenv().ExecutionTime..'\n'..[[
+     /  /        ]]..'Instance time: '..getgenv().ExecutionTime
+     rconsoleprint('\n')
+     rconsoleprint([[
      |]])
     rconsoleprint('@@WHITE@@')
     rconsoleprint([[  |        ]]..getMDYT()..'\n'..[[

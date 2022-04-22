@@ -167,6 +167,24 @@ addCommand({"clear","clr"}, "Clears the console.", function(Message, Args)
     return "Cleared console!"
 end)
 
+addCommand({"import"}, "Imports a addon into the console.", function(Message, Args)
+    if #Args >= 1 then
+        local Command = Args[1]
+        if Command then
+            if GetURL("/addons/"..Command) then
+                writefile("MoonPrompt/addons/"..Command,GetURL("/addons/"..Command))
+            elseif
+            consoleError("Couldnt find this file... for a list of addons go here: ")
+            end
+        elseif
+            consoleError("Please list a file... for a list of addons go here: ")
+        end
+        end
+    preCommand()
+    Prompt()
+    return "ImportHelp"
+end)
+
 addCommand({"commands", "cmds", "help"}, "Lists out the commands.", function(Message, Args)
     local cmdList = "\n"
     for _,v in pairs(commandTable) do

@@ -143,7 +143,7 @@ addCommand({"clear"}, "Clears the console.", function(Message, Args)
     return "Cleared console!"
 end)
 for i,v in next, listfiles('MoonPrompt/addons') do
-    loadfile(readfile(v)
+    loadstring((readfile(v))
 end
 
 ---- Final ----

@@ -37,6 +37,38 @@ function addCommand(Names, Description, Func)
     table.insert(commandTable, {Names, Description, Func})
 end
 
+function getCmd(cmd)
+	for _,v in pairs(commandTable) do
+		if table.find(v[1], cmd) then
+			return v
+		else
+			return false
+		end
+	end
+end
+
+function addAlias(cmd, alias)
+	local Command = getCmd(cmd)
+	if Command then
+		table.insert(Command[1], alias)
+		return Command
+	else
+		return false
+	end
+end
+
+function removeAlias(cmd, alias)
+	local Command = getCmd(cmd)
+	if Command then
+		if table.find(Command[1], alias) then
+			table.insert(Command[1], table.find(Command[1], alias))
+		end
+		return Command
+	else
+		return false
+	end
+end
+
 function getPlayer(Str)
     for _,v in pairs(Services.Players:GetPlayers()) do
         if find(v.Name:lower(), Str:lower()) or find(v.DisplayName:lower(), Str:lower()) then

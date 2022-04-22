@@ -139,7 +139,7 @@ addCommand({"info"}, "Gives you information on a command.", function(Message, Ar
     end
 end)
 
-addCommand({"clear"}, "Clears the console.", function(Message, Args)
+addCommand({"clear","clr"}, "Clears the console.", function(Message, Args)
     Logo()
     preCommand()
     Prompt()

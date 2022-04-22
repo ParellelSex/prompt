@@ -1,101 +1,184 @@
+---- Setup ----
+
+if not game:IsLoaded() then
+    repeat task.wait() until game:IsLoaded()
+end
+
+do
+    local Prompt = getgenv().Prompt
+    if Prompt then
+        return rconsoleprint("Prompt has already been ran!\n"),
+        rconsoleprint("Welcome!")
+    end
+end
+
+---- Main Variables ----
+
+local Services = {
+    Players = game:GetService("Players")
+}
+
+local split, sub, len, find, lower, format =
+      string.split, string.sub, string.len, string.find, string.lower, string.format
+
+local Player = Services.Players.LocalPlayer
+
+---- Main Functions ----
+
+local commandTable = {}
+local function addCommand(Names, Description, Func)
+    table.insert(commandTable, {Names, Description, Func})
+end
+
+local function preCommand()
+    rconsoleprint("@@DARK_GRAY@@")
+    rconsoleprint("> ")
+    rconsoleprint("@@WHITE@@")
+    rconsoleprint("Command")
+    rconsoleprint("@@DARK_GRAY@@")
+    rconsoleprint(": ")
+end
+
+if not isfolder("MoonPrompt") then
+    makefolder('MoonPrompt')
+end
+if not isfolder("MoonPrompt/addons") then
+    makefolder('MoonPrompt/addons')
+end
+
 local CCamera = game:GetService('Workspace').CurrentCamera
+local res = string.format('%sx%s',tostring(CCamera.ViewportSize.X),tostring(CCamera.ViewportSize.Y))
+getgenv().ExecutionTimes = 0
+getgenv().ExecutionTimesm = 0
+getgenv().ExecutionTime = string.format('%s minutes, %s seconds.',getgenv().ExecutionTimesm,getgenv().ExecutionTimes)
 local Months = {
 [1] = 'January',[2] = 'February',[3] = 'March',
 [4] = 'April',[5] = 'May',[6] = 'June',
 [7] = 'July',[8] = 'August',[9] = 'September',
 [10] = 'October',[11] = 'November',[12] = 'December'
 }
+spawn(function()
+    while wait(1) do
+        getgenv().ExecutionTimes=getgenv().ExecutionTimes+1
+        if getgenv().ExecutionTimes == 60 then
+            getgenv().ExecutionTimes = 0
+            getgenv().ExecutionTimesm = getgenv().ExecutionTimesm+1
+        end
+        getgenv().ExecutionTime = string.format('%s minutes, %s seconds.',getgenv().ExecutionTimesm,getgenv().ExecutionTimes)
+    end
+end)
 local function getMDYT()
     return string.format('%s %s, %s | %s',Months[tonumber(os.date('%m'))],tonumber(os.date('%d')),tostring(os.date('%Y')),tostring(os.date('%X')))
 end
-local ms = rconsoleinput()
-if ms:sub(1,5):lower() == 'dump ' then
-    local HttpService = game:GetService("HttpService")
-local function GetURL(url)
-    return game:HttpGet(url)
-end
-function dumpUser(name)
-pcall(function()
-    local dumpplr = game:GetService('Players')[name]
-    local ID = dumpplr.UserId
-    local info = HttpService:JSONDecode(GetURL(
-    'https://users.roblox.com/v1/users/'..ID
-    ))
-    local followersTable = HttpService:JSONDecode(GetURL(
-    'https://friends.roblox.com/v1/users/'..ID..'/followers/count'
-    ))
-    local followingTable = HttpService:JSONDecode(GetURL(
-    'https://friends.roblox.com/v1/users/'..ID..'/followings/count'
-    ))
-    local friendsTable = HttpService:JSONDecode(GetURL(
-    'https://friends.roblox.com/v1/users/'..ID..'/friends'
-    ))
-    local selffriendsTable = HttpService:JSONDecode(GetURL(
-    'https://friends.roblox.com/v1/users/'..game:GetService('Players')
-    .LocalPlayer.UserId..'/friends'
-    ))
-    local UserName = dumpplr.Name
-    local DisplayName = dumpplr.DisplayName
-    local JoinDate = info['created']:sub(1,10)
-    local Followers = followersTable['count']
-    local Following = followingTable['count']
-    local Friends = #friendsTable['data']
-    local Mutuals = {}
-    for i,c in next, friendsTable['data'] do
-    for i,v in next, c do
-    for k,l in next, selffriendsTable['data'] do
-    for s,e in next, l do
-    if i == 'name' then
-    if v == e then
-    table.insert(Mutuals,v)
-    end end end end end end
-    rconsoleprint('User ID: '..ID)
-    rconsoleprint('\n')
-    rconsoleprint('User Name: '..UserName)
-    rconsoleprint('\n')
-    rconsoleprint('User Display Name: '..DisplayName)
-    rconsoleprint('\n')
-    rconsoleprint('Join Date: '..JoinDate)
-    rconsoleprint('\n')
-    rconsoleprint('Followers: '..Followers)
-    rconsoleprint('\n')
-    rconsoleprint('Following: '..Following)
-    rconsoleprint('\n')
-    rconsoleprint('Friends: '..Friends)
-    rconsoleprint('\n')
-    rconsoleprint('Mutuals: ')
-    for i,v in next, Mutuals do
-       rconsoleprint(v..' ')
-    end
-    end)
-    end
-    dumpUser(ms:sub(6))
-    rconsoleprint('\n')
-    text()
-elseif ms:lower() == 'clear' then
+local function Logo()
     rconsoleclear()
     rconsoleprint('@@DARK_GRAY@@')
-    rconsoleprint([[    _.._
-      .' .-'`    ]]..'Resolution: '..res..'\n'..[[
-     /  /        ]]..'Instance time: '..getgenv().ExecutionTime
-     rconsoleprint('\n')
-     rconsoleprint([[
-     |]])
+    rconsoleprint([[     _.._
+  .' .-'`    ]]..' Resolution: '..res..'\n'..[[
+ /  /        ]]..' Instance time: '..getgenv().ExecutionTime..'\n'..
+     " |")
     rconsoleprint('@@WHITE@@')
-    rconsoleprint([[  |        ]]..getMDYT()..'\n'..[[
-     \  '.___.;
-      '.____.']])
-    rconsoleprint('\n')
-    rconsoleprint('\n')
+    rconsoleprint([[  |         ]]..getMDYT()..'\n'..[[
+ \  '.___.;
+  '.____.'
+    ]])
+    rconsoleprint("\n")
+    rconsoleprint("@@DARK_GRAY@@")
+    rconsoleprint("[")
+    rconsoleprint("@@WHITE@@")
+    rconsoleprint("!")
+    rconsoleprint("@@DARK_GRAY@@")
+    rconsoleprint("] ")
+    rconsoleprint("@@WHITE@@")
+    rconsoleprint("Welcome back, ")
     rconsoleprint('@@DARK_GRAY@@')
-    rconsoleprint('[')
-    rconsoleprint('@@WHITE@@')
-    rconsoleprint('!')
-    rconsoleprint('@@DARK_GRAY@@')
-    rconsoleprint('] ')
-    rconsoleprint('@@WHITE@@')
-    rconsoleprint('Welcome back, ')
-    rconsoleprint('@@DARK_GRAY@@')
-    rconsoleprint(tostring(game:GetService('Players').LocalPlayer.Name))
-    rconsoleprint('\n')
-    text()
+    rconsoleprint(Player.Name.."\n")
+end
+
+local function consoleError(Text)
+    rconsoleprint("@@YELLOW@@")
+    rconsoleprint("[")
+    rconsoleprint("@@BROWN@@")
+    rconsoleprint("!")
+    rconsoleprint("@@YELLOW@@")
+    rconsoleprint("] "..Text.."\n")
+end
+
+---- Core ----
+
+rconsolename("Prompt")
+Logo()
+preCommand()
+
+addCommand({"info"}, "Gives you information on a command.", function(Message, Args)
+    if #Args >= 1 then
+        local foundCommand
+        do
+            for _,v in pairs(commandTable) do
+                local Names = v[1]
+                for i,x in pairs(Names) do
+                    if find(x:lower(), Args[1]:lower()) then
+                        foundCommand = v
+                        break
+                    end
+                end
+            end
+        end
+        
+        if foundCommand then
+            local Aliases = ""
+            if #foundCommand[1] < 1 then
+                local Aliases = "None"
+            end
+            for _,v in pairs(foundCommand[1]) do
+                if _ ~= #foundCommand[1] then
+                    Aliases = Aliases .. v .. ", "
+                else
+                    Aliases = Aliases .. v
+                end
+            end
+            return format("Name: %s\nAliases: %s\nDescription: %s\n", foundCommand[1][1], Aliases, foundCommand[2])
+        else
+            return "Command not found."
+        end
+    end
+end)
+
+addCommand({"clear"}, "Clears the console.", function(Message, Args)
+    Logo()
+    preCommand()
+    Prompt()
+    return "Cleared console!"
+end)
+for _,file in pairs(listfiles('MoonPrompt/addons')) do
+    loadstring(readfile(tostring(file)))()
+end
+
+---- Final ----
+
+function Prompt()
+    local Input = rconsoleinput()
+    local Passed = false
+    for _,v in pairs(commandTable) do
+        local Split = split(Input, " ")
+        local Names = v[1]
+        local Func = v[3]
+        for i,x in pairs(Names) do
+            if Split[1] == x then
+                local Data = Func(Message, split(sub(Input, len(x)), " "))
+                rconsoleprint(Data)
+                Passed = true
+            end
+        end
+    end
+    if not Passed then
+        consoleError("Invalid command!")
+        preCommand()
+        Prompt()
+    else
+        preCommand()
+        Prompt()
+    end
+    task.wait()
+end
+Prompt()

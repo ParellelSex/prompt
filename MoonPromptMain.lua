@@ -1,7 +1,14 @@
 ---- Setup ----
 
-if not game:IsLoaded() then
-    repeat task.wait() until game:IsLoaded()
+repeat task.wait() until game:IsLoaded() == true
+
+local user = 'ParellelSex'
+local branch = 'prompt'
+local link = 'https://raw.githubusercontent.com/'
+
+local function GetURL(url)
+    local get = '%s/%s/%s/main/%s'
+    return game:HttpGet(string.format(get,link,user,branch,url))
 end
 
 do
@@ -25,7 +32,7 @@ local Player = Services.Players.LocalPlayer
 
 ---- Main Functions ----
 
-commandTable = {}
+local commandTable = {}
 function addCommand(Names, Description, Func)
     table.insert(commandTable, {Names, Description, Func})
 end
@@ -169,17 +176,11 @@ end)
 
 addCommand({"import"}, "Imports a addon into the console.", function(Message, Args)
     if #Args >= 1 then
-        local Command = Args[1]
-        if Command then
-            if GetURL("/addons/"..Command) then
-                writefile("MoonPrompt/addons/"..Command,GetURL("/addons/"..Command))
-            elseif
-            consoleError("Couldnt find this file... for a list of addons go here: https://github.com/ParellelSex/prompt/tree/main/addons")
-            end
-        elseif
-            consoleError("Please list a file... for a list of addons go here: https://github.com/ParellelSex/prompt/tree/main/addons")
-        end
-        end
+        pcall(function()
+        writefile("MoonPrompt/addons/"..Args[1],GetURL("addons/"..Args[1]))
+        loadfile('MoonPrompt/addons/'..Args[1])()
+        end)
+    end
     preCommand()
     Prompt()
     return "ImportHelp"

@@ -199,7 +199,7 @@ addCommand({"info"}, "Gives you information on a command.", function(Message, Ar
     end
 end)
 
-addCommand({"clear","clr"}, "Clears the console.", function(Message, Args)
+addCommand({"clear", "clr"}, "Clears the console.", function(Message, Args)
     Logo()
     preCommand()
     Prompt()
@@ -222,9 +222,7 @@ addCommand({"commands", "cmds", "help"}, "Lists out the commands.", function(Mes
     local cmdList = "\n"
     for _,v in pairs(commandTable) do
         local Names = v[1]
-        for i,x in pairs(Names) do
-            cmdList = cmdList .. x .. "\n"
-        end
+        cmdList = cmdList .. Names[1] .. "\n"
     end
     cmdList = cmdList .. "\n"
     return cmdList

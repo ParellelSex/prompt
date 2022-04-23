@@ -146,7 +146,7 @@ local function Logo()
     rconsoleprint(Player.Name.."\n")
 end
 
-local function consoleError(Text)
+function consoleError(Text)
     rconsoleprint("@@YELLOW@@")
     rconsoleprint("[")
     rconsoleprint("@@BROWN@@")

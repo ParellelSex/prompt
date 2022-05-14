@@ -19,8 +19,8 @@ do
     end
 end
 
-writefolder("MoonPrompt")
-writefolder("MoonPrompt/addons")
+makefolder("MoonPrompt")
+makefolder("MoonPrompt/addons")
 
 ---- Main Variables ----
 

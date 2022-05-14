@@ -16,4 +16,5 @@ addCommand({"walkspeed", "ws", "speed"}, "Sets players walkspeed.", function(Mes
 	end
 	
 	Humanoid.WalkSpeed = tonumber(Speed)
+	return "Successfully changed speed to " .. Speed .. "!\n"
 end)

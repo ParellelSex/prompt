@@ -19,6 +19,9 @@ do
     end
 end
 
+writefolder("MoonPrompt")
+writefolder("MoonPrompt/addons")
+
 ---- Main Variables ----
 
 local Services = {

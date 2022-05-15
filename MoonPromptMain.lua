@@ -35,7 +35,7 @@ local Player = Services.Players.LocalPlayer
 
 ---- Main Functions ----
 
-local commandTable = {}
+commandTable = {}
 function addCommand(Names, Description, Func)
     table.insert(commandTable, {Names, Description, Func})
 end
